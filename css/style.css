@@ -1,0 +1,226 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #2E6FA8; }
+body, button { font-family: 'Mali', 'Leelawadee UI', 'Tahoma', sans-serif; }
+button { cursor: pointer; border: none; }
+
+#stage {
+  position: absolute; left: 50%; top: 50%;
+  width: 1280px; height: 720px;
+  transform-origin: center; overflow: hidden;
+  border-radius: 18px; background: #BFE7FF;
+  user-select: none;
+}
+.scene { position: absolute; inset: 0; }
+.hidden { display: none !important; }
+
+/* ---------- ปุ่ม ---------- */
+.big-btn {
+  position: absolute; padding: 18px 44px; font-size: 40px; font-weight: 700;
+  color: #fff; background: #FF7A59; border-radius: 999px;
+  box-shadow: 0 8px 0 #D9573A, 0 14px 24px rgba(0,0,0,.18);
+  transition: transform .1s;
+}
+.big-btn:hover { transform: translateY(-3px) scale(1.04); }
+.big-btn:active { transform: translateY(5px); box-shadow: 0 3px 0 #D9573A; }
+.play-btn { right: 70px; bottom: 50px; animation: pulse 1.6s ease-in-out infinite; }
+.next-btn { right: 40px; bottom: 36px; font-size: 32px; padding: 14px 36px; background: #4CAF7A; box-shadow: 0 8px 0 #34875B; }
+.skip-btn {
+  position: absolute; top: 18px; right: 20px; padding: 8px 18px; font-size: 20px;
+  border-radius: 999px; background: rgba(255,255,255,.8); color: #555;
+}
+
+/* ---------- สนามบิน ---------- */
+.window-sky {
+  position: absolute; left: 0; top: 0; width: 1280px; height: 560px;
+  background: linear-gradient(#8FD3FF, #D9F2FF 70%); overflow: hidden;
+}
+.runway {
+  position: absolute; left: 0; right: 0; top: 420px; height: 140px;
+  background: #A9B4BC;
+  background-image: linear-gradient(90deg, #fff 0 60px, transparent 60px 120px);
+  background-size: 120px 8px; background-repeat: repeat-x; background-position: 0 70px;
+}
+.window-plane { position: absolute; left: 760px; top: 230px; width: 470px; animation: drift 5s ease-in-out infinite; }
+.window-frame { position: absolute; left: 0; top: 0; width: 1280px; height: 560px; border: 22px solid #4E9C9E; border-bottom-width: 30px; pointer-events: none; }
+.mullion { position: absolute; top: 0; bottom: 0; width: 24px; background: #4E9C9E; }
+.transom { position: absolute; left: 0; right: 0; top: 330px; height: 22px; background: #4E9C9E; }
+.floor { position: absolute; left: 0; top: 560px; width: 1280px; height: 160px; background: #E7EDF1; }
+.carpet { position: absolute; right: 0; top: 40px; width: 520px; height: 120px; background: #3D6CC9; border-top-left-radius: 60px; }
+
+.cloud { position: absolute; width: 160px; height: 50px; background: #fff; border-radius: 50px; opacity: .9; }
+.cloud::before, .cloud::after { content: ''; position: absolute; background: #fff; border-radius: 50%; }
+.cloud::before { width: 70px; height: 70px; left: 24px; top: -34px; }
+.cloud::after { width: 54px; height: 54px; left: 82px; top: -22px; }
+.c1 { left: 120px; top: 90px; animation: float-x 30s linear infinite; }
+.c2 { left: 620px; top: 60px; transform: scale(.7); animation: float-x 40s linear infinite; }
+.c3 { left: 980px; top: 140px; transform: scale(.85); animation: float-x 36s linear infinite; }
+
+.logo-card {
+  position: absolute; left: 60px; top: 56px; width: 470px; padding: 24px 30px;
+  background: rgba(255,255,255,.94); border-radius: 32px; text-align: center;
+  box-shadow: 0 10px 0 rgba(0,0,0,.08);
+}
+.logo-small { font-size: 22px; color: #7A8A99; }
+.logo-card h1 { font-size: 56px; line-height: 1.2; color: #3A4A5A; }
+.kid-name { color: #F2A900; text-shadow: 3px 3px 0 #FFE7A3; }
+.pinoo-name { color: #8E8E9A; text-shadow: 3px 3px 0 #F8C9D7; }
+.logo-sub { font-size: 30px; font-weight: 700; color: #3D8BD9; }
+.stem-chips { margin-top: 12px; display: flex; justify-content: center; gap: 10px; }
+.stem-chips span { width: 48px; height: 48px; border-radius: 50%; font-size: 26px; font-weight: 700; color: #fff; display: grid; place-items: center; text-shadow: 0 2px 0 rgba(0,0,0,.15); }
+
+.hero-kid { position: absolute; left: 560px; top: 250px; width: 277px; height: 430px; }
+.hero-pinoo { position: absolute; width: 150px; transition: left .7s cubic-bezier(.5,-0.4,.5,1.4), top .7s cubic-bezier(.5,-0.6,.5,1.2); }
+.hero-pinoo.on-head { left: 623px; top: 143px; }
+.hero-pinoo.beside { left: 850px; top: 503px; }
+.char { width: 100%; height: 100%; overflow: visible; display: block; }
+.bob { animation: bob 2.4s ease-in-out infinite; }
+.hero-pinoo.on-head .dressed, .guide-pinoo .dressed { animation: bob 2.4s ease-in-out infinite; }
+.hero-pinoo.talk .dressed { animation: talk .35s ease-in-out infinite; }
+
+.voice-warn {
+  position: absolute; left: 60px; bottom: 30px; padding: 10px 18px; max-width: 470px;
+  background: #FFF4D6; color: #8A5A00; border-radius: 16px; font-size: 18px;
+}
+
+/* ลูกโป่งคำพูด */
+.speech {
+  position: absolute; left: 700px; top: 200px; width: 500px; padding: 22px 64px 22px 28px;
+  background: #fff; border-radius: 30px; font-size: 30px; line-height: 1.45; color: #3A4A5A;
+  box-shadow: 0 8px 0 rgba(0,0,0,.08), 0 0 0 5px #F5B4C8;
+}
+.speech::after {
+  content: ''; position: absolute; left: 210px; bottom: -26px;
+  border: 16px solid transparent; border-top: 22px solid #fff;
+}
+.replay { position: absolute; right: 12px; top: 12px; width: 46px; height: 46px; border-radius: 50%; background: #FFE9F0; font-size: 22px; }
+.replay:hover { background: #FFD1E0; }
+
+/* เครื่องบินขึ้น */
+.takeoff .window-plane { animation: takeoff 2.2s ease-in forwards; }
+.takeoff .hero-kid, .takeoff .hero-pinoo, .takeoff .hero-ham, .takeoff .speech, .takeoff .next-btn { transition: opacity .6s; opacity: 0; }
+.takeoff::after { content: ''; position: absolute; inset: 0; background: #fff; animation: fade-in 2.2s ease-in forwards; }
+
+/* ---------- แผนที่ ---------- */
+.ocean { background: radial-gradient(circle at 50% 40%, #7FDBF5, #3BA9E0 80%); }
+.waves {
+  position: absolute; inset: 0; opacity: .35;
+  background-image: radial-gradient(ellipse 22px 6px at 50% 50%, transparent 60%, #fff 62%, transparent 72%);
+  background-size: 90px 60px; animation: wave 6s linear infinite;
+}
+.route { position: absolute; inset: 0; pointer-events: none; }
+.route path { fill: none; stroke: #fff; stroke-width: 6; stroke-dasharray: 2 18; stroke-linecap: round; opacity: .9; }
+
+.island { position: absolute; width: 240px; height: 250px; cursor: pointer; transition: transform .2s; }
+.island-svg { width: 240px; height: 190px; overflow: visible; }
+.island.open:hover { transform: scale(1.07) rotate(-1deg); }
+.island.open .friend { animation: hop 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: bottom; }
+.island.locked .island-svg { filter: grayscale(.75) brightness(1.05); opacity: .8; }
+.island-label {
+  margin: -14px auto 0; width: 230px; padding: 6px 10px; text-align: center;
+  background: #fff; border-radius: 18px; border-bottom: 6px solid var(--c);
+  box-shadow: 0 4px 10px rgba(0,0,0,.12); color: #3A4A5A;
+}
+.island-label b { display: block; font-size: 24px; }
+.island-label small { white-space: nowrap; font-size: 14px; color: #6A7A8A; }
+.lock { position: absolute; left: 50%; top: 40px; transform: translateX(-50%); font-size: 50px; filter: drop-shadow(0 4px 4px rgba(0,0,0,.2)); }
+.shake { animation: shake .5s; }
+
+.map-plane { position: absolute; width: 140px; pointer-events: none; animation: drift 3s ease-in-out infinite; filter: drop-shadow(0 10px 6px rgba(0,0,0,.18)); }
+
+.topbar { position: absolute; left: 14px; right: 14px; top: 12px; display: flex; gap: 10px; align-items: center; }
+.spacer { flex: 1; }
+.icon-btn, .pill-btn {
+  height: 56px; border-radius: 999px; background: #fff; font-size: 26px; color: #3A4A5A;
+  box-shadow: 0 5px 0 rgba(0,0,0,.12); transition: transform .1s;
+}
+.icon-btn { width: 56px; }
+.pill-btn { padding: 0 20px; font-size: 22px; font-weight: 700; }
+.icon-btn:hover, .pill-btn:hover { transform: translateY(-2px); }
+.star-count { height: 56px; padding: 0 22px; display: flex; align-items: center; background: #FFF4C2; border-radius: 999px; font-size: 26px; font-weight: 700; color: #B07A00; }
+
+.guide { position: absolute; left: 0; top: 0; pointer-events: none; }
+.guide-pinoo { position: absolute; left: 1160px; top: 86px; width: 110px; }
+.speech.small { left: 760px; top: 90px; width: 390px; padding: 12px 20px; font-size: 22px; }
+.speech.small::after { left: auto; right: -26px; bottom: 18px; border: 14px solid transparent; border-left: 20px solid #fff; }
+
+/* หน้าต่างเลือกด่าน */
+.modal-bg { position: absolute; inset: 0; background: rgba(20,40,70,.45); display: grid; place-items: center; z-index: 10; }
+.modal { position: relative; width: 860px; background: #fff; border-radius: 36px; overflow: hidden; box-shadow: 0 20px 0 rgba(0,0,0,.12); }
+.modal-head { background: var(--c); padding: 18px 30px; font-size: 40px; font-weight: 700; color: #3A4A5A; }
+.modal-head small { font-size: 22px; margin-left: 10px; opacity: .75; }
+.close-btn { position: absolute; right: 18px; top: 16px; width: 56px; height: 56px; border-radius: 50%; background: #fff; font-size: 26px; color: #777; }
+.friend-row { display: flex; align-items: center; gap: 24px; padding: 26px 34px 6px; }
+.friend-big { font-size: 110px; animation: hop 1.6s ease-in-out infinite; }
+.speech.inline { position: relative; left: auto; top: auto; width: auto; flex: 1; font-size: 26px; }
+.speech.inline::after { left: -26px; bottom: 34px; border: 14px solid transparent; border-right: 20px solid #fff; }
+.levels { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; padding: 26px 34px 34px; }
+.level-btn {
+  display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 18px 10px;
+  background: #F7FAFC; border-radius: 28px; border: 5px solid var(--c);
+  box-shadow: 0 7px 0 var(--c); transition: transform .12s; color: #3A4A5A;
+}
+.level-btn:hover { transform: translateY(-4px); }
+.level-btn.locked { filter: grayscale(1); opacity: .55; }
+.lv-num { width: 70px; height: 70px; border-radius: 50%; background: var(--c); display: grid; place-items: center; font-size: 38px; font-weight: 700; }
+.lv-name { font-size: 22px; font-weight: 700; }
+.lv-stars { font-size: 30px; color: #FFC21A; letter-spacing: 2px; }
+.lv-stars i { font-style: normal; color: #DDE3E8; }
+/* เกาะที่มี 5 ด่าน: ปุ่มเล็กลง ด่านท้าทายมีไฟ */
+.levels.many { grid-template-columns: repeat(5, 1fr); gap: 14px; padding: 22px 24px 30px; }
+.levels.many .level-btn { padding: 14px 6px; border-radius: 24px; }
+.levels.many .lv-num { width: 58px; height: 58px; font-size: 30px; }
+.levels.many .lv-name { font-size: 18px; min-height: 46px; text-align: center; line-height: 1.25; }
+.levels.many .lv-stars { font-size: 24px; }
+.level-btn.challenge { position: relative; background: #FFF6E5; }
+.level-btn.challenge::before { content: '🔥 ท้าทาย'; position: absolute; top: -14px; left: 50%; transform: translateX(-50%); padding: 2px 10px; border-radius: 999px; background: #FF7A59; color: #fff; font-size: 15px; white-space: nowrap; }
+
+.toast {
+  position: absolute; left: 50%; bottom: 40px; transform: translateX(-50%); z-index: 20;
+  padding: 16px 32px; background: #3A4A5A; color: #fff; font-size: 26px; border-radius: 999px;
+  animation: pop-in .3s;
+}
+
+/* ---------- แอนิเมชัน ---------- */
+.pop-in { animation: pop-in .45s cubic-bezier(.3,1.6,.6,1); }
+@keyframes pop-in { from { transform: scale(.4); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+@keyframes pulse { 50% { transform: scale(1.07); } }
+@keyframes bob { 50% { transform: translateY(-8px); } }
+@keyframes talk { 50% { transform: translateY(-6px) rotate(-3deg); } }
+@keyframes hop { 0%, 60%, 100% { transform: translateY(0); } 30% { transform: translateY(-10px); } }
+@keyframes drift { 50% { transform: translate(6px, -8px); } }
+@keyframes float-x { from { margin-left: -60px; } to { margin-left: 60px; } }
+@keyframes wave { to { background-position: 90px 0; } }
+@keyframes shake { 20%, 60% { transform: translateX(-10px); } 40%, 80% { transform: translateX(10px); } }
+@keyframes takeoff { 30% { transform: translate(-40px, 0); } to { transform: translate(900px, -420px) rotate(-14deg) scale(.6); } }
+@keyframes fade-in { 0%, 60% { opacity: 0; } to { opacity: 1; } }
+
+.blink { animation: blink 4s infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes blink { 0%, 94%, 100% { transform: scaleY(1); } 97% { transform: scaleY(.1); } }
+.arm-wave { animation: wave-arm 1.2s ease-in-out infinite; }
+@keyframes wave-arm { 50% { transform: rotate(-18deg); } }
+.ear-l, .ear-r { animation: ear 3s ease-in-out infinite; }
+.ear-r { animation-delay: .4s; }
+@keyframes ear { 0%, 80%, 100% { transform: rotate(0); } 88% { transform: rotate(-8deg); } }
+
+/* ของแต่งตัวบนตัวละคร */
+.dressed { position: relative; width: 100%; height: 100%; isolation: isolate; }
+.acc { position: absolute; font-size: var(--acc); line-height: 1; pointer-events: none; }
+.acc.back { z-index: -1; }
+
+/* พี่แฮม: ผ้าห่มพลิกได้สองด้าน (หดเป็นเส้นบาง สลับด้าน แล้วกางออก) */
+.ham { cursor: pointer; width: 100%; aspect-ratio: 220 / 200; animation: ham-sway 3s ease-in-out infinite; transform-origin: 50% 95%; }
+.ham-inner { position: relative; width: 100%; height: 100%; }
+.ham-face { position: absolute; inset: 0; }
+.ham .ham-face.back, .ham.flipped .ham-face.front { display: none; }
+.ham.flipped .ham-face.back { display: block; }
+.ham.flipping .ham-inner { animation: ham-flip .6s ease-in-out; }
+.ham:hover .ham-inner { filter: drop-shadow(0 0 10px #fff8); }
+@keyframes ham-sway { 50% { transform: translateY(-5px) rotate(-1.5deg); } }
+@keyframes ham-flip { 0% { transform: scaleX(1); } 50% { transform: scaleX(0.04) translateY(-14px); } 100% { transform: scaleX(1); } }
+
+.ham.talk, .talk > .ham { animation: ham-talk .4s ease-in-out infinite; }
+@keyframes ham-talk { 50% { transform: translateY(-7px) scaleY(1.04); } }
+/* พี่แฮมในฉากเปิดเกม: ยืนด้านซ้ายของ เด็กผู้เล่น */
+.hero-ham { position: absolute; left: 330px; top: 520px; width: 200px; }
+.airport .speech.ham-says { left: 40px; width: 420px; box-shadow: 0 8px 0 rgba(0,0,0,.08), 0 0 0 5px #E9A3AB; }
+.airport .speech.ham-says::after { left: 330px; }

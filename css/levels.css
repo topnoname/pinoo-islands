@@ -1,0 +1,430 @@
+/* ================= ด่าน ================= */
+.level-bg { position: absolute; inset: 0; }
+.science-level .level-bg {
+  background:
+    radial-gradient(circle at 92% 18%, #FFE680 0 50px, transparent 52px),
+    linear-gradient(#A8E4FF 0 64%, #8DD67A 64% 100%);
+}
+.level-top { position: absolute; left: 14px; right: 14px; top: 12px; display: flex; gap: 12px; align-items: center; z-index: 5; }
+.level-title {
+  flex: 1; height: 56px; display: flex; align-items: center; padding: 0 24px;
+  background: rgba(255,255,255,.92); border-radius: 999px; font-size: 26px; font-weight: 700; color: #3A4A5A;
+  border-bottom: 6px solid var(--c);
+}
+.play { position: absolute; inset: 0; }
+.level-guide { position: absolute; inset: 0; pointer-events: none; z-index: 6; }
+/* มุมซ้ายล่าง: เด็กผู้เล่น พี่หนู และพี่แฮม */
+.level-guide .guide-kid { position: absolute; left: 6px; top: 562px; width: 96px; height: 149px; }
+.guide-kid.pose-cheer .dressed { animation: hop .5s ease-in-out 3; }
+.guide-kid.pose-oops .dressed { animation: shake .4s ease-in-out 1; }
+.guide-kid.pose-think .dressed { animation: bob 2.4s ease-in-out infinite; }
+.level-guide .guide-pinoo { position: absolute; left: 98px; top: 588px; width: 112px; }
+.level-guide .guide-pinoo .dressed { animation: bob 2.4s ease-in-out infinite; }
+.level-guide .guide-pinoo.talk .dressed { animation: talk .35s ease-in-out infinite; }
+/* พี่แฮมนั่งข้างพี่หนู กดพลิกผ้าได้ */
+.level-guide .guide-ham { position: absolute; left: 200px; top: 632px; width: 84px; pointer-events: auto; }
+.guide-speech.ham-says { box-shadow: 0 8px 0 rgba(0,0,0,.08), 0 0 0 5px #E9A3AB; }
+.guide-speech { left: 296px; top: 588px; width: auto; max-width: 540px; padding: 14px 24px; font-size: 24px; line-height: 1.4; }
+.guide-speech::after { left: -26px; bottom: 24px; border: 14px solid transparent; border-right: 20px solid #fff; }
+
+/* การ์ดของที่ลากได้ */
+.item-card {
+  position: absolute; width: 150px; height: 170px; padding-top: 14px;
+  display: flex; flex-direction: column; align-items: center; gap: 6px;
+  background: #fff; border-radius: 28px; box-shadow: 0 7px 0 rgba(0,0,0,.12);
+  cursor: grab; touch-action: none; z-index: 2; transition: transform .15s;
+}
+.item-card:hover { transform: scale(1.06); }
+.item-card.dragging { cursor: grabbing; transform: scale(1.12) rotate(-4deg); z-index: 9; box-shadow: 0 16px 24px rgba(0,0,0,.2); transition: none; }
+.item-card.returning { transition: left .35s, top .35s; }
+.item-icon { font-size: 76px; line-height: 1; height: 92px; display: grid; place-items: center; }
+.item-label { font-size: 24px; font-weight: 700; color: #3A4A5A; }
+.hint-glow { animation: glow .9s ease-in-out infinite; }
+@keyframes glow { 50% { box-shadow: 0 0 0 10px #FFE066, 0 0 30px 14px #FFD23F; transform: scale(1.08); } }
+
+/* ด่าน 1: ต้นไม้ต้องการอะไร */
+.tray { position: absolute; left: 720px; top: 108px; width: 530px; height: 420px; background: rgba(255,255,255,.45); border-radius: 36px; border: 4px dashed rgba(255,255,255,.9); }
+.bunny { position: absolute; left: 80px; top: 300px; font-size: 130px; animation: hop 2s ease-in-out infinite; }
+.plant { position: absolute; left: 300px; top: 100px; width: 260px; height: 355px; }
+.plant-svg { width: 100%; height: 100%; overflow: visible; }
+.plant.grow { animation: grow .6s cubic-bezier(.3,1.7,.6,1); transform-origin: bottom center; }
+@keyframes grow { from { transform: scale(.85, .7); } to { transform: scale(1); } }
+.bloom { transform-origin: 110px 98px; animation: spin-in .8s ease-out; }
+@keyframes spin-in { from { transform: scale(0) rotate(-90deg); } to { transform: scale(1) rotate(0); } }
+.need-meter { position: absolute; left: 310px; top: 470px; display: flex; gap: 16px; }
+.need-meter span { width: 70px; height: 70px; border-radius: 50%; background: rgba(255,255,255,.6); display: grid; place-items: center; font-size: 40px; filter: grayscale(1); opacity: .5; border: 4px dashed #fff; }
+.need-meter span.on { filter: none; opacity: 1; background: #fff; border-style: solid; border-color: #7BD389; animation: pop-in .4s; }
+.item-card.absorb { transition: left .5s, top .5s, transform .5s, opacity .5s .3s; transform: scale(.3); opacity: 0; pointer-events: none; }
+
+/* ด่าน 2: ลอยหรือจม */
+.tank { position: absolute; left: 300px; top: 190px; width: 600px; height: 330px; border: 8px solid rgba(255,255,255,.9); border-top: none; border-radius: 0 0 40px 40px; overflow: hidden; background: rgba(255,255,255,.25); }
+.water { position: absolute; left: 0; right: 0; top: 50px; bottom: 0; background: linear-gradient(#6FCBF2cc, #2E9BD6dd); }
+.drop-obj { position: absolute; width: 110px; height: 110px; font-size: 88px; line-height: 110px; text-align: center; z-index: 3; animation: hop 1.4s ease-in-out infinite; }
+.drop-obj.falling { animation: none; transition: left .5s ease-out, top .6s ease-in; width: 80px; height: 80px; font-size: 64px; line-height: 80px; }
+.drop-obj.bobbing { transition: top .7s ease-out; animation: bob 2s ease-in-out .7s infinite; }
+.guess-btn {
+  position: absolute; left: 960px; width: 270px; height: 150px; border-radius: 36px; font-size: 44px; font-weight: 700; color: #fff;
+  display: flex; align-items: center; justify-content: center; gap: 14px; transition: transform .12s;
+}
+.guess-btn b { font-size: 54px; }
+.guess-btn:hover { transform: scale(1.05); }
+.guess-btn:active { transform: translateY(5px); }
+.guess-btn.float { top: 190px; background: #5BC0EB; box-shadow: 0 9px 0 #3A93BD; }
+.guess-btn.sink { top: 370px; background: #7A8BA8; box-shadow: 0 9px 0 #56657F; }
+.sink-dots { position: absolute; left: 960px; top: 110px; display: flex; gap: 10px; }
+.sink-dots span { width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,.7); border: 3px solid #fff; }
+.sink-dots span.ok { background: #7BD389; }
+.sink-dots span.miss { background: #FFC83D; }
+
+/* ด่าน 3: วงจรชีวิตผีเสื้อ */
+.cycle-arrows { position: absolute; inset: 0; pointer-events: none; }
+.cycle-arrows path { fill: none; stroke: #fff; stroke-width: 8; stroke-linecap: round; stroke-dasharray: 2 16; marker-end: url(#arrowHead); }
+.cycle-center { position: absolute; left: 480px; top: 300px; width: 150px; text-align: center; font-size: 26px; font-weight: 700; color: #3E7A3A; line-height: 1.3; }
+.slot { position: absolute; width: 150px; height: 170px; border-radius: 28px; border: 5px dashed #fff; background: rgba(255,255,255,.35); display: grid; place-items: center; }
+.slot span { font-size: 54px; font-weight: 700; color: rgba(255,255,255,.95); }
+.slot.done { border-color: transparent; }
+.board-target { position: absolute; left: 290px; top: 80px; width: 560px; height: 500px; border-radius: 50%; }
+.life-card.placed { transition: left .4s, top .4s; cursor: default; box-shadow: 0 0 0 5px #7BD389, 0 7px 0 rgba(0,0,0,.12); }
+.life-card.placed:hover { transform: none; }
+.eggs { font-size: 36px; letter-spacing: -6px; }
+.chrysalis { width: 66px; height: 86px; }
+.cycle-done .life-card.placed { animation: hop 1.2s ease-in-out infinite; }
+.free-butterfly { position: absolute; left: 520px; top: 280px; font-size: 90px; z-index: 4; animation: flutter 3s ease-in-out infinite; }
+.free-butterfly.fly-away { animation: fly-away 2.5s ease-in forwards; }
+@keyframes flutter { 0%, 100% { transform: translate(0, 0) rotate(-6deg); } 25% { transform: translate(60px, -40px) rotate(6deg); } 50% { transform: translate(0, -70px) rotate(-6deg); } 75% { transform: translate(-60px, -30px) rotate(6deg); } }
+@keyframes fly-away { to { transform: translate(700px, -500px) scale(.4) rotate(20deg); opacity: 0; } }
+
+/* เลือกทำสิ่งดี */
+.deed-card { width: 820px; padding: 30px 36px 36px; background: #fff; border-radius: 36px; text-align: center; box-shadow: 0 0 0 8px #FFB3CF; }
+.deed-title { font-size: 34px; font-weight: 700; color: #3A4A5A; margin-bottom: 24px; }
+.deed-options { display: flex; gap: 28px; justify-content: center; }
+.deed-opt {
+  width: 340px; padding: 22px 14px; border-radius: 30px; background: #FFF5F9; border: 5px solid #FFB3CF;
+  font-size: 28px; font-weight: 700; color: #3A4A5A; display: flex; flex-direction: column; align-items: center; gap: 10px;
+  box-shadow: 0 8px 0 #FFB3CF; transition: transform .12s;
+}
+.deed-opt span { font-size: 70px; }
+.deed-opt:hover { transform: translateY(-4px); }
+.deed-opt.faded { opacity: .45; }
+.deed-opt.chosen { background: #E9FBEF; border-color: #7BD389; box-shadow: 0 8px 0 #7BD389; transform: scale(1.06); }
+
+/* หน้าจบด่าน */
+.win-card { position: relative; width: 680px; padding: 30px; background: #fff; border-radius: 40px; text-align: center; box-shadow: 0 0 0 8px #FFE27A, 0 20px 0 rgba(0,0,0,.12); }
+.win-title { font-size: 54px; font-weight: 700; color: #F2A900; text-shadow: 3px 3px 0 #FFE7A3; }
+.win-stars span { display: inline-block; font-size: 100px; color: #DDE3E8; margin: 0 6px; }
+.win-stars span.on { color: #FFC21A; animation: star-pop .5s backwards cubic-bezier(.3,1.8,.6,1); text-shadow: 0 6px 0 #E2A200; }
+@keyframes star-pop { from { transform: scale(0) rotate(-120deg); } }
+.win-rewards { display: flex; justify-content: center; gap: 30px; margin: 6px 0 22px; }
+.reward { font-size: 20px; font-weight: 700; color: #6A7A8A; }
+.reward-icon { width: 110px; height: 110px; margin: 0 auto 4px; border-radius: 50%; background: #FFF6D6; display: grid; place-items: center; font-size: 66px; animation: hop 1.6s ease-in-out infinite; }
+.win-btns { display: flex; gap: 14px; justify-content: center; }
+.win-btns .pill-btn { height: 64px; font-size: 24px; padding: 0 24px; }
+.win-btns .next { background: #4CAF7A; color: #fff; box-shadow: 0 5px 0 #34875B; }
+.confetti { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.confetti i { position: absolute; top: -20px; width: 12px; height: 18px; border-radius: 3px; animation: confetti 2.6s linear forwards; }
+@keyframes confetti { to { transform: translateY(780px) rotate(720deg); } }
+
+/* แผนที่: เกาะที่เพิ่งปลดล็อก */
+.island.new-unlock { animation: unlock 1.2s ease-in-out 3; }
+@keyframes unlock { 50% { transform: scale(1.15); filter: drop-shadow(0 0 20px #FFE066); } }
+
+/* ================= เกาะหุ่นยนต์ ================= */
+.tech-level .level-bg {
+  background-color: #CFEBFF;
+  background-image:
+    linear-gradient(rgba(255,255,255,.55) 2px, transparent 2px),
+    linear-gradient(90deg, rgba(255,255,255,.55) 2px, transparent 2px);
+  background-size: 40px 40px;
+}
+.grid-board {
+  position: absolute; width: 600px; height: 400px; display: grid;
+  grid-template-columns: repeat(6, 100px); grid-template-rows: repeat(4, 100px);
+  border-radius: 24px; overflow: hidden; box-shadow: 0 0 0 8px #fff, 0 14px 0 8px rgba(0,0,0,.08);
+}
+.grid-board i { background: #EAF6FF; border: 2px solid #D2EAFB; }
+.grid-board i:nth-child(odd) { background: #F5FBFF; }
+.piece { position: absolute; width: 100px; height: 100px; display: grid; place-items: center; font-size: 66px; pointer-events: none; }
+.piece.bib { font-size: 74px; z-index: 3; transition: left .35s ease-in-out, top .35s ease-in-out; filter: drop-shadow(0 6px 4px rgba(0,0,0,.18)); }
+.piece.battery { animation: glow-soft 1.2s ease-in-out infinite; }
+.piece.battery.collected { animation: collect .6s forwards; }
+@keyframes glow-soft { 50% { transform: scale(1.12); filter: drop-shadow(0 0 12px #7BD389); } }
+@keyframes collect { to { transform: scale(1.8) translateY(-40px); opacity: 0; } }
+.trail { position: absolute; width: 100px; height: 100px; pointer-events: none; }
+.trail::after { content: ''; position: absolute; left: 42px; top: 42px; width: 16px; height: 16px; border-radius: 50%; background: #9AD0F5; }
+.round-dots { position: absolute; left: 290px; top: 532px; display: flex; gap: 10px; }
+.round-dots span { font-size: 34px; filter: grayscale(1); opacity: .4; }
+.round-dots span.on { filter: none; opacity: 1; animation: pop-in .4s; }
+
+.arrow-pad { position: absolute; left: 950px; top: 96px; width: 290px; height: 290px; }
+.arrow-pad.center { top: 170px; }
+.arrow-btn {
+  position: absolute; width: 96px; height: 96px; border-radius: 26px; font-size: 56px;
+  background: #fff; box-shadow: 0 7px 0 #8CC4EA; transition: transform .1s;
+}
+.arrow-btn:hover { transform: scale(1.06); }
+.arrow-btn:active { transform: translateY(5px); box-shadow: 0 2px 0 #8CC4EA; }
+.arrow-btn.up { left: 97px; top: 0; }
+.arrow-btn.left { left: 0; top: 97px; }
+.arrow-btn.right { left: 194px; top: 97px; }
+.arrow-btn.down { left: 97px; top: 194px; }
+
+.program {
+  position: absolute; left: 916px; top: 404px; width: 356px; padding: 12px;
+  display: flex; flex-wrap: wrap; gap: 10px; background: rgba(255,255,255,.75); border-radius: 24px;
+  border: 4px solid #9AD0F5;
+}
+.program::before { content: 'แถวคำสั่ง'; position: absolute; left: 16px; top: -30px; font-size: 20px; font-weight: 700; color: #3D7FB0; }
+.cmd { width: 70px; height: 70px; border-radius: 18px; background: #fff; display: grid; place-items: center; font-size: 40px; position: relative; box-shadow: 0 4px 0 #BFDDF2; }
+.cmd.empty { background: transparent; border: 3px dashed #BFDDF2; box-shadow: none; }
+.program.loop .cmd { width: 96px; height: 96px; font-size: 52px; cursor: pointer; }
+.program.loop .cmd:not(.empty):hover { transform: scale(1.05); }
+.cmd b { position: absolute; right: -8px; bottom: -8px; padding: 2px 8px; border-radius: 999px; background: #FF7A59; color: #fff; font-size: 20px; }
+.cmd.bump-up b { animation: pop-in .3s; }
+/* ด่านเก็บดาว (5 ช่อง) และด่านแก้บั๊ก (4 ช่อง): ช่องเล็กลงให้พอดี 4 ช่องต่อแถว */
+.program.slots-5 .cmd, .program.slots-4 .cmd { width: 74px; height: 74px; font-size: 42px; }
+.program.debug { top: 220px; }
+.program.debug::before { content: 'แถวคำสั่ง (แตะเพื่อหมุนลูกศร)'; }
+.program.debug .cmd { cursor: pointer; }
+.program.debug .cmd.bump-up { animation: pop-in .3s; }
+.piece.star-pick { animation: glow-soft 1.2s ease-in-out infinite; }
+.piece.star-pick.collected { animation: collect .6s forwards; }
+.undo-btn { position: absolute; left: 920px; top: 600px; width: 80px; height: 80px; border-radius: 24px; background: #fff; font-size: 36px; box-shadow: 0 6px 0 #C9D6E0; }
+.go-btn {
+  position: absolute; left: 1016px; top: 596px; width: 240px; height: 88px; border-radius: 999px;
+  background: #4CAF7A; color: #fff; font-size: 38px; font-weight: 700; box-shadow: 0 8px 0 #34875B;
+}
+.go-btn:hover { transform: scale(1.04); }
+.go-btn:active { transform: translateY(5px); box-shadow: 0 3px 0 #34875B; }
+
+/* ================= เกาะช่างสร้าง ================= */
+.eng-level .level-bg { background: linear-gradient(#FFE9C7 0 70%, #C9E59A 70% 100%); }
+.shape-svg { width: 100%; height: 100%; display: block; overflow: visible; }
+.ground-strip { position: absolute; left: 0; right: 0; top: 502px; height: 218px; background: #A6D785; }
+.beaver { position: absolute; left: 110px; top: 360px; font-size: 130px; animation: hop 2s ease-in-out infinite; }
+.house-zone { position: absolute; left: 320px; top: 100px; width: 360px; height: 420px; }
+.shape-slot { position: absolute; }
+.shape-slot:not(.filled) .shape-svg * { stroke: #C28A4E; stroke-width: 3; stroke-dasharray: 8 6; vector-effect: non-scaling-stroke; }
+.house-done .shape-slot { animation: hop 1.4s ease-in-out infinite; }
+.shape-card { width: 120px; height: 180px; }
+.shape-thumb { width: 90px; height: 90px; margin-top: 4px; display: grid; place-items: center; }
+.shape-thumb .shape-svg { width: 80px; height: 80px; }
+.shape-thumb.rect .shape-svg { width: 50px; height: 86px; }
+.shape-thumb.triangle .shape-svg { width: 90px; height: 64px; }
+.item-label.small { font-size: 17px; text-align: center; line-height: 1.2; padding: 0 6px; }
+.item-card.gone { opacity: 0; pointer-events: none; transition: opacity .2s; }
+
+.eng-level .river { position: absolute; left: 400px; top: 420px; width: 440px; height: 300px; background: linear-gradient(#6FCBF2, #2E9BD6); }
+.cliff { position: absolute; top: 400px; height: 320px; background: #8DC26F; border-top: 10px solid #A6D785; }
+.cliff.left { left: 0; width: 420px; border-radius: 0 30px 0 0; }
+.cliff.right { left: 820px; width: 460px; border-radius: 30px 0 0 0; }
+.cliff span { position: absolute; left: 30px; top: -110px; font-size: 80px; }
+.bridge { position: absolute; left: 410px; top: 386px; width: 420px; height: 30px; border-radius: 8px; transition: transform .6s, opacity .6s; transform-origin: left center; }
+.bridge.empty { border: 4px dashed #fff; background: rgba(255,255,255,.25); }
+.bridge.leaf { background: repeating-linear-gradient(90deg, #7BD389 0 30px, #5DBB63 30px 60px); }
+.bridge.paper { background: repeating-linear-gradient(90deg, #fff 0 40px, #EEF2F5 40px 44px); }
+.bridge.wood { background: repeating-linear-gradient(90deg, #B07A45 0 36px, #8A5A2B 36px 40px); }
+.bridge.stone { background: repeating-linear-gradient(90deg, #A0A7AE 0 46px, #7D858C 46px 50px); }
+.bridge.broken { transform: rotate(25deg) translateY(60px); opacity: 0; }
+.vehicle { position: absolute; top: 290px; left: 1010px; width: 110px; height: 110px; font-size: 90px; line-height: 110px; text-align: center; z-index: 3; }
+.vehicle.driving { transition: left 1.2s ease-in-out; }
+.material-btn {
+  position: absolute; top: 96px; width: 150px; height: 140px; border-radius: 28px; background: #fff;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  font-size: 24px; font-weight: 700; color: #3A4A5A; box-shadow: 0 7px 0 #E2C59A; transition: transform .12s;
+}
+.material-btn span { font-size: 62px; line-height: 1; }
+.material-btn:hover { transform: translateY(-4px); }
+.bridge-dots { left: 1000px; top: 96px; }
+.bridge-dots span, .tower-dots span { font-size: 40px; }
+
+.tower-ground { position: absolute; left: 300px; top: 540px; width: 440px; height: 22px; border-radius: 11px; background: #8A5A2B; }
+.goal-line { position: absolute; left: 330px; width: 380px; border-top: 5px dashed #E86A5C; }
+.flag-pole { position: absolute; left: 712px; width: 6px; background: #8A8A8A; }
+.flag-pole span { position: absolute; left: -4px; top: -46px; font-size: 50px; }
+.flag-pole.wave span { animation: talk .4s ease-in-out infinite; }
+.tower-zone { position: absolute; left: 330px; top: 110px; width: 380px; height: 430px; }
+.tower-dots { left: 330px; top: 576px; }
+.block-piece { position: absolute; border-radius: 12px; cursor: grab; touch-action: none; z-index: 2; box-shadow: inset 0 -8px 0 rgba(0,0,0,.12), 0 5px 0 rgba(0,0,0,.1); }
+.block-piece.triangle, .block-piece.ball { box-shadow: none; }
+.block-piece.ball { border-radius: 50%; }
+.block-piece.dragging { cursor: grabbing; z-index: 9; transform: scale(1.05); }
+.block-piece.returning { transition: left .35s, top .35s; }
+.block-piece.stacked { transition: left .25s, top .25s; cursor: default; }
+.block-piece.topple { transition: left .25s, top .25s; animation: topple .7s ease-in forwards; }
+@keyframes topple { 30% { transform: rotate(-8deg); } 100% { transform: translate(120px, 80px) rotate(70deg); opacity: .3; } }
+
+/* ================= เกาะตัวเลข ================= */
+.math-level .level-bg { background: linear-gradient(#FFF6C9 0 72%, #F2D77A 72% 100%); }
+.monkey { position: absolute; left: 90px; top: 330px; font-size: 130px; animation: hop 2s ease-in-out infinite; }
+.basket-area { position: absolute; left: 290px; top: 110px; width: 590px; height: 400px; border-radius: 40px; background: #F5D38A; box-shadow: inset 0 -14px 0 #E2B65E, 0 0 0 8px #fff; }
+.banana { position: absolute; width: 100px; height: 100px; font-size: 70px; line-height: 100px; text-align: center; cursor: pointer; transition: transform .12s; }
+.banana:hover { transform: scale(1.12) rotate(-6deg); }
+.banana b { position: absolute; right: 0; top: 0; width: 38px; height: 38px; border-radius: 50%; background: #FF7A59; color: #fff; font-size: 24px; line-height: 38px; animation: pop-in .3s; }
+.num-btn {
+  position: absolute; width: 240px; height: 120px; border-radius: 30px; background: #fff; color: #3A4A5A;
+  font-size: 76px; font-weight: 700; box-shadow: 0 8px 0 #F2CC3D; transition: transform .12s;
+}
+.num-btn:hover { transform: scale(1.05); }
+.num-btn.correct, .pat-opt.correct { background: #E9FBEF; box-shadow: 0 8px 0 #7BD389; }
+.faded { opacity: .45; }
+.math-dots { left: 920px; top: 560px; }
+.math-dots span { font-size: 34px; }
+
+.pat-card {
+  position: absolute; top: 160px; width: 120px; height: 120px; border-radius: 26px; background: #fff;
+  display: grid; place-items: center; font-size: 72px; box-shadow: 0 6px 0 rgba(0,0,0,.08);
+}
+.pat-card.missing { background: rgba(255,255,255,.5); border: 5px dashed #F2CC3D; font-size: 60px; animation: hop 1.4s ease-in-out infinite; }
+.pat-card.filled { box-shadow: 0 0 0 5px #7BD389; }
+.pat-opt {
+  position: absolute; top: 360px; width: 150px; height: 150px; border-radius: 32px; background: #fff;
+  font-size: 84px; box-shadow: 0 8px 0 #F2CC3D; transition: transform .12s;
+}
+.pat-opt:hover { transform: translateY(-4px); }
+.pat-opt.num { font-weight: 700; color: #3A4A5A; font-size: 76px; }
+
+.basket {
+  position: absolute; top: 130px; width: 320px; height: 300px; border-radius: 40px; background: #F5D38A;
+  box-shadow: inset 0 -14px 0 #E2B65E, 0 8px 0 rgba(0,0,0,.08); transition: transform .12s;
+}
+.basket:hover { transform: scale(1.03); }
+.basket span { position: absolute; font-size: 56px; }
+.basket.correct { box-shadow: inset 0 -14px 0 #E2B65E, 0 0 0 8px #7BD389; }
+.add-row { position: absolute; left: 250px; top: 150px; width: 820px; display: flex; align-items: center; justify-content: center; gap: 22px; }
+.add-row b { font-size: 70px; color: #B07A00; }
+.add-group { min-width: 120px; height: 130px; padding: 0 18px; border-radius: 30px; background: #fff; display: grid; place-items: center; font-size: 56px; letter-spacing: -6px; box-shadow: 0 6px 0 rgba(0,0,0,.08); }
+.add-group.q { font-size: 70px; font-weight: 700; color: #3A4A5A; letter-spacing: 0; }
+.pile { position: absolute; left: 300px; top: 100px; width: 620px; height: 90px; text-align: center; font-size: 60px; letter-spacing: -4px; }
+.pile small { font-size: 28px; color: #B07A00; letter-spacing: 0; }
+.share-monkey { position: absolute; top: 200px; width: 260px; text-align: center; }
+.sm-face { font-size: 110px; line-height: 1.1; }
+.plate { height: 70px; margin: 4px 20px 12px; border-radius: 999px; background: #fff; font-size: 40px; line-height: 70px; letter-spacing: -6px; box-shadow: 0 5px 0 rgba(0,0,0,.08); }
+.share-monkey.correct .plate { box-shadow: 0 0 0 5px #7BD389; }
+.give-btn { padding: 12px 30px; border-radius: 999px; background: #FFC83D; color: #6A4A00; font-size: 30px; font-weight: 700; box-shadow: 0 6px 0 #E2A200; }
+.give-btn:active { transform: translateY(4px); box-shadow: 0 2px 0 #E2A200; }
+
+/* ================= เกาะหัวใจ ================= */
+.heart-level .level-bg { background: linear-gradient(#FFE3EE 0 72%, #BFE6A8 72% 100%); }
+.heart-dots { left: 940px; top: 110px; gap: 6px; }
+.heart-dots span { font-size: 34px; }
+.scene-card {
+  position: absolute; left: 290px; top: 100px; width: 640px; height: 250px; padding: 18px 24px;
+  background: #fff; border-radius: 36px; text-align: center; box-shadow: 0 0 0 6px #FFB3CF, 0 10px 0 rgba(0,0,0,.08);
+}
+.scene-emoji { font-size: 96px; line-height: 1.2; letter-spacing: 6px; }
+.scene-emoji .elephant { display: inline-block; animation: hop 2s ease-in-out infinite; }
+.scene-story { margin-top: 8px; font-size: 28px; font-weight: 700; color: #3A4A5A; line-height: 1.35; }
+.phrase-btn {
+  position: absolute; top: 380px; width: 185px; height: 150px; border-radius: 30px; background: #FFF5F9;
+  border: 5px solid #FFB3CF; box-shadow: 0 7px 0 #FFB3CF; font-size: 26px; font-weight: 700; color: #3A4A5A; line-height: 1.35;
+  transition: transform .12s;
+}
+.phrase-btn:hover, .feel-btn:hover { transform: translateY(-4px); }
+.phrase-btn.correct, .feel-btn.correct { background: #E9FBEF; border-color: #7BD389; box-shadow: 0 7px 0 #7BD389; }
+.feel-btn {
+  position: absolute; top: 380px; width: 136px; height: 160px; border-radius: 30px; background: #FFF5F9;
+  border: 5px solid #FFB3CF; box-shadow: 0 7px 0 #FFB3CF; font-size: 24px; font-weight: 700; color: #3A4A5A;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; transition: transform .12s;
+}
+.feel-btn span { font-size: 70px; line-height: 1; }
+
+.park-tree { position: absolute; left: 70px; top: 300px; font-size: 140px; }
+.park-tree.right { left: 1050px; top: 280px; }
+.trash-item {
+  position: absolute; left: 530px; top: 110px; width: 160px; text-align: center; z-index: 4;
+  animation: hop 1.4s ease-in-out infinite; transition: left .5s ease-out, top .5s ease-in, transform .5s, opacity .4s .3s;
+}
+.trash-item span { display: block; font-size: 100px; line-height: 1.1; }
+.trash-item small { display: inline-block; padding: 4px 14px; border-radius: 999px; background: #fff; font-size: 22px; font-weight: 700; color: #3A4A5A; }
+.trash-item.tossed { animation: none; top: 330px; transform: scale(.5); opacity: 0; }
+.bin {
+  position: absolute; top: 320px; width: 200px; height: 230px; border-radius: 18px 18px 36px 36px; background: var(--bin);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
+  box-shadow: inset 0 -16px 0 rgba(0,0,0,.12), 0 8px 0 rgba(0,0,0,.1); transition: transform .12s;
+}
+.bin:hover { transform: scale(1.04); }
+.bin-lid { position: absolute; left: -10px; right: -10px; top: -22px; height: 26px; border-radius: 14px; background: var(--bin); filter: brightness(.88); transition: transform .3s; transform-origin: left bottom; }
+.bin.gulp .bin-lid { transform: rotate(-30deg); }
+.bin-icon { font-size: 70px; }
+.bin-label { padding: 2px 16px; border-radius: 999px; background: rgba(255,255,255,.9); font-size: 24px; font-weight: 700; color: #3A4A5A; }
+
+/* เด็กผู้เล่น บนการ์ดคำถามคนดีและการ์ดชนะ */
+.card-kid { position: absolute; left: -150px; bottom: -30px; width: 170px; height: 264px; }
+.card-kid .dressed { position: relative; width: 100%; height: 100%; }
+.card-kid.cheer .dressed { animation: hop .6s ease-in-out infinite; }
+.card-kid.think .dressed { animation: bob 2.4s ease-in-out infinite; }
+.deed-card { position: relative; }
+.win-card .card-kid { left: -190px; width: 200px; height: 310px; }
+.win-friends { position: absolute; right: -200px; bottom: -24px; width: 210px; height: 160px; }
+.win-friends .wf-pinoo { position: absolute; left: 0; bottom: 0; width: 120px; }
+.win-friends .wf-pinoo .dressed { animation: hop .6s ease-in-out infinite .2s; }
+.win-friends .wf-ham { position: absolute; right: 0; bottom: 4px; width: 96px; }
+.deed-open .guide-kid, .won .level-guide { visibility: hidden; }
+
+/* ---------- ช่างสร้าง ด่าน 4: วัดก่อนสร้าง ---------- */
+.m-river { position: absolute; left: 0; right: 0; top: 330px; height: 230px; background: linear-gradient(#7CC8F0, #4FA6DB); }
+.m-cliff { position: absolute; top: 300px; height: 300px; background: #B98B5E; border-top: 14px solid #8FCB6B; }
+.m-cliff.left { left: 0; border-radius: 0 20px 0 0; }
+.m-cliff.right { right: 0; border-radius: 20px 0 0 0; }
+.m-cliff span { position: absolute; top: -110px; font-size: 80px; }
+.m-cliff.left span { left: 30px; }
+.m-cliff.right span { right: 40px; }
+.m-ruler { position: absolute; top: 300px; height: 28px; }
+.m-ruler i { position: absolute; top: 0; width: 76px; height: 28px; border: 3px dashed #fff; border-radius: 6px; }
+.m-ruler i b { position: absolute; left: 0; right: 0; top: 34px; text-align: center; font-size: 26px; color: #fff; text-shadow: 0 2px 0 #2F7FB5; font-style: normal; }
+.m-ruler.hint-glow i { border-color: #FFE066; }
+.m-deck { position: absolute; top: 300px; height: 24px; z-index: 2; }
+.m-deck i { position: absolute; top: 0; height: 24px; background: #A86B3C; border-radius: 4px; box-shadow: inset 0 -5px 0 #8A5530; }
+.m-car { position: absolute; top: 228px; font-size: 72px; z-index: 3; transform: scaleX(-1); }
+.m-car.driving { transition: left 1s linear; }
+.m-car.fall { animation: car-fall 1s ease-in forwards; }
+@keyframes car-fall { to { transform: scaleX(-1) translateY(200px) rotate(40deg); opacity: .2; } }
+.m-panel { position: absolute; left: 470px; top: 92px; width: 340px; padding: 12px 18px; background: #fff; border-radius: 26px; box-shadow: 0 6px 0 #F4C58A; text-align: center; }
+.m-plank-icon i { display: inline-block; height: 18px; background: #A86B3C; border-radius: 4px; vertical-align: middle; margin-right: 10px; }
+.m-plank-icon small { font-size: 20px; font-weight: 700; color: #6A5040; }
+.m-row { display: flex; align-items: center; justify-content: center; gap: 18px; margin-top: 8px; }
+.m-btn { width: 70px; height: 70px; border-radius: 50%; background: #FFC98B; font-size: 44px; font-weight: 700; color: #6A4020; box-shadow: 0 5px 0 #E39A4F; }
+.m-btn:active { transform: translateY(4px); box-shadow: 0 1px 0 #E39A4F; }
+.m-count { min-width: 80px; font-size: 56px; font-weight: 700; color: #6A4020; }
+.m-dots { left: 1010px; top: 100px; }
+
+/* ---------- ช่างสร้าง ด่าน 5: สามเหลี่ยมแข็งแรง ---------- */
+.t-ground { position: absolute; left: 0; right: 0; top: 500px; height: 220px; background: #A6D785; }
+.t-stage { position: absolute; left: 50%; bottom: 206px; transform: translateX(-50%); transform-origin: 50% 100%; }
+.t-frame { display: block; overflow: visible; }
+.t-beam { fill: none; stroke: #A86B3C; stroke-width: 14; stroke-linecap: round; stroke-linejoin: round; }
+.t-beam.diag { stroke: #E8873A; }
+.t-joint { fill: #6A4020; }
+.t-hit { fill: transparent; }
+.tower .t-cell { cursor: pointer; }
+.tower .t-cell:hover .t-hit { fill: rgba(255,255,255,.35); }
+.t-cell.hint-cell .t-hit { fill: rgba(255,224,102,.6); animation: blink-cell .8s ease-in-out infinite; }
+@keyframes blink-cell { 50% { fill: rgba(255,224,102,.15); } }
+.t-stage.t-wobble { animation: t-wobble 1.4s ease-in forwards; }
+@keyframes t-wobble { 30% { transform: translateX(-50%) skewX(-14deg); } 60% { transform: translateX(-50%) skewX(-30deg); } 100% { transform: translateX(-50%) skewX(-34deg) translateY(6px); } }
+.t-stage.t-hold { animation: t-hold .5s ease-in-out 2; }
+@keyframes t-hold { 50% { transform: translateX(-50%) translateX(-4px); } }
+.t-opt { position: absolute; top: 92px; padding: 10px 16px 8px; background: #fff; border-radius: 22px; box-shadow: 0 6px 0 #F4C58A; display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.t-opt:hover { transform: translateY(-3px); }
+.t-opt span { font-size: 22px; font-weight: 700; color: #6A4020; }
+.t-wind { position: absolute; left: -300px; top: 230px; font-size: 70px; z-index: 4; animation: t-wind 2s linear forwards; letter-spacing: 20px; white-space: nowrap; transform: scaleX(-1); }
+@keyframes t-wind { to { left: 1300px; } }
+.t-dots { left: 1010px; top: 100px; }
+
+/* ---------- ตัวเลข ด่าน 4: บวกลบกล้วย ---------- */
+.calc-row { position: absolute; left: 160px; top: 120px; width: 960px; display: flex; align-items: center; justify-content: center; gap: 18px; }
+.calc-row > b { font-size: 70px; color: #B07A00; }
+.calc-group { position: relative; min-width: 120px; height: 150px; padding: 0 16px 26px; border-radius: 30px; background: #fff; display: flex; align-items: center; justify-content: center; flex-wrap: wrap; max-width: 330px; font-size: 44px; box-shadow: 0 6px 0 rgba(0,0,0,.08); }
+.calc-group i { font-style: normal; margin: 0 -4px; }
+.calc-group i.new { animation: pop-in .5s; }
+.calc-group i.eaten { opacity: .22; filter: grayscale(1); }
+.calc-group small { position: absolute; bottom: 4px; left: 0; right: 0; text-align: center; font-size: 30px; font-weight: 700; color: #B07A00; }
+.calc-group.monkey-eat { font-size: 70px; }
+.calc-group.q { font-size: 76px; font-weight: 700; color: #3A4A5A; padding-bottom: 0; }
+
+/* ---------- ตัวเลข ด่าน 5: เลขที่หายไป ---------- */
+.seq-river { position: absolute; left: 200px; top: 200px; width: 880px; height: 120px; border-radius: 60px; background: #8FD0F2; }
+.pat-card.stone { top: 196px; width: 130px; height: 120px; border-radius: 50% 50% 44% 44%; background: #E7E2D8; font-size: 56px; font-weight: 700; color: #4A4036; box-shadow: 0 8px 0 #BDB3A3; }
+.pat-card.stone.missing { background: rgba(255,255,255,.6); font-size: 52px; }
+.seq-monkey { position: absolute; top: 108px; font-size: 80px; transition: left .6s cubic-bezier(.5,-0.5,.5,1.5); }
+.go-btn.t-test, .go-btn.m-test { left: 990px; width: 270px; font-size: 32px; white-space: nowrap; }

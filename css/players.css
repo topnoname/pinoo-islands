@@ -1,0 +1,36 @@
+/* ================= เลือกผู้เล่น / ผู้เล่นใหม่ ================= */
+.players-scene { background: radial-gradient(circle at 50% 30%, #FFF8E1, #FFE0B8); }
+.players-title { position: absolute; left: 0; right: 0; top: 50px; text-align: center; font-size: 48px; font-weight: 700; color: #6A4A3A; }
+.player-grid { position: absolute; left: 140px; right: 140px; top: 150px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+.player-card {
+  height: 240px; border-radius: 34px; background: #fff; box-shadow: 0 8px 0 #F2C58A;
+  display: flex; flex-direction: column; align-items: center; justify-content: flex-end; padding-bottom: 14px; gap: 2px;
+  overflow: hidden; transition: transform .12s;
+}
+.player-card:hover { transform: translateY(-5px); }
+.player-card b { font-size: 30px; color: #3A4A5A; max-width: 90%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.player-card small { font-size: 20px; font-weight: 700; color: #C68A00; }
+.player-face { width: 110px; height: 160px; position: relative; }
+.add-card { background: #FFF6E5; border: 5px dashed #F2C58A; box-shadow: none; justify-content: center; }
+.add-card span { font-size: 64px; }
+.players-home { position: absolute; left: 20px; top: 20px; }
+.players-pinoo { position: absolute; right: 30px; bottom: 20px; width: 130px; height: 145px; }
+.players-pinoo .dressed { animation: bob 2.4s ease-in-out infinite; }
+.name-input {
+  position: absolute; left: 340px; top: 200px; width: 600px; height: 110px; padding: 0 30px; box-sizing: border-box;
+  border: 6px solid #F2C58A; border-radius: 36px; background: #fff; text-align: center;
+  font: 700 56px Mali, 'Leelawadee UI', sans-serif; color: #3A4A5A; outline: none;
+}
+.name-input:focus { border-color: #FF9F43; box-shadow: 0 0 0 8px rgba(255,159,67,.25); }
+.name-next { left: 490px; top: 360px; }
+.gender-row { position: absolute; left: 0; right: 0; top: 150px; display: flex; justify-content: center; gap: 60px; }
+.gender-card {
+  width: 300px; height: 440px; border-radius: 40px; background: #fff; box-shadow: 0 10px 0 #F2C58A;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; transition: transform .15s;
+}
+.gender-card:hover { transform: translateY(-6px) scale(1.02); }
+.gender-card.chosen { box-shadow: 0 0 0 8px #7BD389, 0 10px 0 #7BD389; transform: scale(1.05); }
+.gender-card b { font-size: 34px; color: #3A4A5A; }
+.gender-kid { width: 220px; height: 340px; position: relative; }
+.rp-player { font-size: 26px; margin: 4px 0 12px; color: #6A7A8A; }
+.rp-player b { color: #3A4A5A; }

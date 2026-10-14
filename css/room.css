@@ -1,0 +1,36 @@
+/* ================= ห้องนอนของ เด็กผู้เล่น ================= */
+.bed-room { background: #FFF1E6; }
+.room { position: absolute; left: 20px; top: 0; width: 860px; height: 630px; overflow: hidden; border-radius: 30px 30px 0 0; }
+.room-wall { position: absolute; inset: 0 0 270px 0; background: repeating-linear-gradient(90deg, #FFE3EC 0 40px, #FFEEF3 40px 80px); }
+.room-floor { position: absolute; left: 0; right: 0; bottom: 0; height: 270px; background: repeating-linear-gradient(90deg, #E7C49A 0 120px, #DDB68A 120px 124px); }
+.room-window { position: absolute; left: 520px; top: 40px; width: 170px; height: 180px; border-radius: 18px; border: 10px solid #fff; background: linear-gradient(#9FDBFF, #DDF3FF); box-shadow: 0 6px 0 rgba(0,0,0,.06); }
+.room-window i { position: absolute; left: 50%; top: 0; bottom: 0; width: 8px; margin-left: -4px; background: #fff; }
+.room-window::after { content: '☁️'; position: absolute; left: 20px; top: 26px; font-size: 40px; }
+.room-rug { position: absolute; left: 180px; top: 520px; width: 470px; height: 90px; border-radius: 50%; box-shadow: inset 0 -8px 0 rgba(0,0,0,.08); }
+.room-shelf-board { position: absolute; left: 670px; top: 236px; width: 130px; height: 14px; border-radius: 6px; background: #B98B5E; box-shadow: 0 6px 0 rgba(0,0,0,.08); }
+.room-bed { position: absolute; left: 400px; top: 300px; width: 330px; height: 200px; }
+.room-bed::before { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 120px; border-radius: 24px; background: #9CC6F0; box-shadow: inset 0 -16px 0 #7FB0E0; }
+.room-bed::after { content: ''; position: absolute; left: -14px; bottom: 0; width: 30px; height: 190px; border-radius: 14px; background: #B98B5E; }
+.bed-pillow { position: absolute; left: 30px; top: 60px; width: 100px; height: 54px; border-radius: 26px; background: #fff; box-shadow: 0 4px 0 rgba(0,0,0,.06); }
+.bed-ham { position: absolute; left: 110px; top: 54px; width: 200px; }
+.bed-pinoo { position: absolute; left: 20px; top: -10px; width: 100px; height: 112px; }
+.room-kid { position: absolute; left: 150px; top: 190px; width: 200px; height: 310px; }
+.room-spot {
+  position: absolute; display: grid; place-items: center; line-height: 1; border-radius: 26px; background: transparent;
+  transition: transform .15s; cursor: pointer;
+}
+.room-spot:hover { transform: scale(1.08); }
+.room-spot.on { box-shadow: 0 0 0 4px #FFC83D, 0 0 18px 6px rgba(255,200,61,.6); background: rgba(255,255,255,.35); }
+.room-spot.empty { font-size: 40px !important; color: #fff; background: rgba(255,255,255,.4); border: 4px dashed #fff; }
+.room-panel { position: absolute; left: 900px; top: 0; width: 360px; height: 620px; padding: 18px; background: #fff; border-radius: 30px; box-shadow: 0 8px 0 #F5D3C0; }
+.room-tabs { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.room-tab { height: 70px; border-radius: 20px; background: #FFF4EC; font-size: 40px; }
+.room-tab.on { background: #FFC83D; box-shadow: 0 4px 0 #E2A91A; }
+.room-label { margin: 18px 0 10px; font-size: 30px; font-weight: 700; color: #6A4A3A; text-align: center; }
+.room-opts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.room-opt { height: 130px; border-radius: 24px; background: #FFF4EC; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; box-shadow: 0 5px 0 #F5D3C0; }
+.room-opt span { font-size: 60px; line-height: 1; }
+.room-opt small { font-size: 18px; font-weight: 700; color: #8A6A5A; }
+.room-opt.on { background: #E9FBEF; box-shadow: 0 0 0 4px #7BD389; }
+.room-opt.locked span { filter: grayscale(1); opacity: .6; }
+.room-tip { position: absolute; left: 18px; right: 18px; bottom: 18px; padding: 12px 14px; border-radius: 18px; background: #FFF6D6; font-size: 17px; line-height: 1.5; color: #8A5A00; }
